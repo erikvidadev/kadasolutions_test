@@ -14,8 +14,8 @@ def get_task_by_title(db: Session, task_title: str):
     return db.query(models.Task).filter(models.Task.title == task_title).first()
 
 
-def get_tasks(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Task).offset(skip).limit(limit).all()
+def get_tasks(db: Session):
+    return db.query(models.Task).all()
 
 
 def create_task(db: Session, task: schemas.TaskCreate):
@@ -49,17 +49,16 @@ def delete_task(db: Session, task_id: int):
         db.delete(db_task)
         db.commit()
         return True
-    else:
-        return False
+    return False
 
 
 def filter_and_sort_tasks(db: Session,
                           status: Optional[str] = None,
                           sort_by: Optional[str] = None,
                           order: Optional[str] = None,
-                          skip: int = 0,
                           limit: int = 100):
     query = db.query(models.Task)
+
     if status:
         query = query.filter(models.Task.status == status)
 
@@ -69,5 +68,4 @@ def filter_and_sort_tasks(db: Session,
         elif order == "desc":
             query = query.order_by(desc(getattr(models.Task, sort_by)))
 
-    query = query.offset(skip).limit(limit)
-    return query.all()
+    return query.limit(limit).all()

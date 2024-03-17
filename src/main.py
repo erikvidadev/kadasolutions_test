@@ -32,11 +32,11 @@ def create_task(task: schemas.TaskCreate, db: Session = Depends(get_db)):
 
 
 @app.get("/tasks/", response_model=List[schemas.TaskBase])
-def read_tasks(skip: int = None, limit: int = None, db: Session = Depends(get_db)):
+def read_tasks(db: Session = Depends(get_db)):
     """
-    You can read all of your task from the database by giving the range.
+    You can read all of your task from the database.
     """
-    tasks = crud.get_tasks(db, skip=skip, limit=limit)
+    tasks = crud.get_tasks(db)
     return tasks
 
 
@@ -79,24 +79,27 @@ def filter_and_sort_tasks(
         status: Optional[str] = Query(None, description="Filter tasks by status.(pending, in_progress, completed)"),
         sort_by: Optional[str] = Query(None, description="Field to sort tasks by (created_date or due_date)"),
         order: Optional[str] = Query(None, description="Sort order (asc or desc)"),
-        skip: int = Query(0, description="Number of items to skip for pagination"),
         limit: int = Query(100, description="Maximum number of items to return"),
         db: Session = Depends(get_db)
 ):
     """
-    You can filter and sort the task by different parameters.
+    You can fileter and sort your task here and list them in the required quantity .
     """
-    if sort_by not in [None, "created_date", "due_date"]:
+    valid_sort_fields = [None, "created_date", "due_date"]
+    valid_sort_orders = [None, "asc", "desc"]
+    valid_statuses = [None, "pending", "in_progress", "completed"]
+
+    if sort_by not in valid_sort_fields:
         raise HTTPException(status_code=400,
                             detail="Invalid value for sort_by parameter. It should be 'created_date' or 'due_date'.")
 
-    if order not in [None, "asc", "desc"]:
+    if order not in valid_sort_orders:
         raise HTTPException(status_code=400,
                             detail="Invalid value for order parameter. It should be 'asc' or 'desc'.")
 
-    if status not in [None, "pending", "in_progress", "completed"]:
+    if status not in valid_statuses:
         raise HTTPException(status_code=400,
                             detail="Invalid value for status parameter. "
                                    "It should be 'pending', 'in_progress', or 'completed'.")
 
-    return crud.filter_and_sort_tasks(db, status=status, sort_by=sort_by, order=order, skip=skip, limit=limit)
+    return crud.filter_and_sort_tasks(db, status=status, sort_by=sort_by, order=order, limit=limit)

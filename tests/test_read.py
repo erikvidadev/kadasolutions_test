@@ -36,14 +36,14 @@ class TestGetTasks(unittest.TestCase):
             models.Task(id=1, title="Task 1", description="Description 1"),
             models.Task(id=2, title="Task 2", description="Description 2")
         ]
-        self.mock_db.query().offset().limit().all.return_value = expected_tasks
+        self.mock_db.query().all.return_value = expected_tasks
 
         result = crud.get_tasks(self.mock_db)
 
         self.assertEqual(result, expected_tasks)
 
     def test_get_tasks_no_results(self):
-        self.mock_db.query().offset().limit().all.return_value = []
+        self.mock_db.query().all.return_value = []
 
         result = crud.get_tasks(self.mock_db)
 

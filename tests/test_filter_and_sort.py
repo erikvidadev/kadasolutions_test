@@ -14,14 +14,13 @@ class TestFilterAndSortTasks(unittest.TestCase):
             models.Task(id=3, title="Task 3", status="in_progress", created_date="2022-01-03", due_date="2022-01-07"),
         ]
 
-        mock_db_session.query().filter().order_by().offset().limit().all.return_value = mock_tasks
+        mock_db_session.query().filter().order_by().limit().all.return_value = mock_tasks
 
         result = crud.filter_and_sort_tasks(
             db=mock_db_session,
             status="pending",
             sort_by="created_date",
             order="asc",
-            skip=0,
             limit=100
         )
 
