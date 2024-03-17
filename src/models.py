@@ -7,9 +7,9 @@ from src.database import Base
 
 
 class StatusEnum(str, Enum):
-    pending = "pending"
-    in_progress = "in_progress"
-    completed = "completed"
+    PENDING = "pending"
+    IN_PROGRESS = "in_progress"
+    COMPLETED = "completed"
 
 
 class Task(Base):
@@ -20,4 +20,4 @@ class Task(Base):
     description = Column(String, index=True)
     created_date = Column(DateTime, default=datetime.now)
     due_date = Column(DateTime)
-    status = Column(SQLEnum(StatusEnum), default=StatusEnum.pending)
+    status = Column(SQLEnum(StatusEnum), default=StatusEnum.PENDING)

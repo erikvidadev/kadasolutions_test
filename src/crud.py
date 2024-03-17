@@ -39,8 +39,7 @@ def update_task(db: Session, task_id: int, task: schemas.TaskCreate):
         db.commit()
         db.refresh(db_task)
         return db_task
-    else:
-        return None
+    return None
 
 
 def delete_task(db: Session, task_id: int):

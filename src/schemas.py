@@ -1,20 +1,15 @@
 from datetime import datetime
-from enum import Enum
 
 from pydantic import BaseModel
 
-
-class StatusEnum(str, Enum):
-    pending = "pending"
-    in_progress = "in_progress"
-    completed = "completed"
+from src.models import StatusEnum
 
 
 class TaskBase(BaseModel):
     title: str
     description: str
     due_date: datetime = None
-    status: StatusEnum = StatusEnum.pending
+    status: StatusEnum = StatusEnum.PENDING
 
 
 class TaskCreate(TaskBase):
