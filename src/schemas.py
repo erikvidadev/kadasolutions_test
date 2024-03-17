@@ -1,6 +1,5 @@
 from datetime import datetime
 from enum import Enum
-from typing import Optional
 
 from pydantic import BaseModel
 
@@ -11,22 +10,22 @@ class StatusEnum(str, Enum):
     completed = "completed"
 
 
-class Task(BaseModel):
+class TaskBase(BaseModel):
     title: str
-    description: Optional[str] = None
-    due_date: Optional[datetime] = None
+    description: str
+    due_date: datetime = None
     status: StatusEnum = StatusEnum.pending
 
 
-class TaskCreate(Task):
+class TaskCreate(TaskBase):
     pass
 
 
-class TaskUpdate(Task):
+class TaskUpdate(TaskBase):
     pass
 
 
-class TaskInDB(Task):
+class Task(TaskBase):
     id: int
     created_date: datetime
 

@@ -3,7 +3,7 @@ from enum import Enum
 
 from sqlalchemy import Enum as SQLEnum, Column, Integer, String, DateTime
 
-from database import Base
+from src.database import Base
 
 
 class StatusEnum(str, Enum):
@@ -15,8 +15,8 @@ class StatusEnum(str, Enum):
 class Task(Base):
     __tablename__ = "tasks"
 
-    id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, unique=True, index=True)
+    id = Column(Integer, primary_key=True)
+    title = Column(String, index=True)
     description = Column(String, index=True)
     created_date = Column(DateTime, default=datetime.now)
     due_date = Column(DateTime)
