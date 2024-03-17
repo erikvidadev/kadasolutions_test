@@ -11,25 +11,25 @@ class StatusEnum(str, Enum):
     completed = "completed"
 
 
-class TaskBase(BaseModel):
+class Task(BaseModel):
     title: str
     description: Optional[str] = None
     due_date: Optional[datetime] = None
     status: StatusEnum = StatusEnum.pending
 
 
-class TaskCreate(TaskBase):
+class TaskCreate(Task):
     pass
 
 
-class TaskUpdate(TaskBase):
+class TaskUpdate(Task):
     pass
 
 
-class TaskInDB(TaskBase):
+class TaskInDB(Task):
     id: int
     created_date: datetime
 
     class Config:
-        orm_mode = True  #Pydantic's orm_mode will tell the Pydantic model to read the data even if it is not a dict,
-                         #but an ORM model (or any other arbitrary object with attributes).
+        orm_mode = True  # Pydantic's orm_mode will tell the Pydantic model to read the data even if it is not a dict,
+        # but an ORM model (or any other arbitrary object with attributes).
